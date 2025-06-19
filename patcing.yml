@@ -6,12 +6,12 @@
 
   tasks:
     - name: Check for updates
-      ansible.builtin.package_facts:
+      package_facts:
         manager: auto
       register: package_info
 
     - name: Install updates (if any)
-      ansible.builtin.package:
+      package:
         name: '*'
         state: latest
         update_cache: true
@@ -19,14 +19,14 @@
       notify: Reboot system if required
 
     - name: Reboot the server if required
-      ansible.builtin.reboot:
+      reboot:
       name: Reboot system
       when: reboot_required.changed
       register: reboot_required
 
   handlers:
     - name: Reboot system if required
-      ansible.builtin.reboot:
+      reboot:
         msg: "Reboot initiated by Ansible"
         connect_timeout: 5
         reboot_timeout: 600
